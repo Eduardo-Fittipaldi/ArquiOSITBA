@@ -9,7 +9,6 @@ GLOBAL _cli
 GLOBAL _sti
 GLOBAL picMasterMask
 GLOBAL picSlaveMask
-GLOBAL int_08_hand
 GLOBAL _lidt
 GLOBAL haltcpu
 
@@ -20,9 +19,13 @@ GLOBAL _irq03Handler
 GLOBAL _irq04Handler
 GLOBAL _irq05Handler
 
+GLOBAL int80Handler
+
 
 EXTERN irqDispatcher
-EXTERN int_08
+;TODO: Se usan?
+EXTERN int_20
+EXTERN int_21
 
 ;RowDaBoat - Wyrm - Kernel/CPU/irqHandlers.asm
 %macro	pushState 0
@@ -116,7 +119,7 @@ _lidt:				; Carga el IDTR
     push    rbp
     mov     rbp, rsp
     push    rbx
-    mov     rbx, [rbp + 6] ; ds:bx = puntero a IDTR. ESTO FUNCIONA ASI?
+    mov     rbx, [rbp + 6] ; ds:bx = puntero a IDTR. TODO: ESTO FUNCIONA ASI?
     rol	    rbx,16
     lidt    [rbx]          ; carga IDTR
     pop     rbx
@@ -148,24 +151,17 @@ _irq04Handler:
 _irq05Handler:
 	irqHandlerMaster 5
 
-
-int_08_hand:				; Handler de INT 8 ( Timer tick)
-    push    ds
-    push    es                      ; Se salvan los registros
-    pusha                           ; Carga de DS y ES con el valor del selector
-    mov     ax, 10h			; a utilizar.
-    mov     ds, ax
-    mov     es, ax
-    call    int_08
-    mov	al,20h			; Envio de EOI generico al PIC
-	out	20h,al
-	popa
-    pop     es
-    pop     ds
-    iret
-
 haltcpu:
 	cli
 	hlt
 	ret
 
+;RowDaBoat - Wyrm - Kernel/CPU/irqHandlers.asm
+int80Handler:
+	pushState
+
+;TODO: Implementar
+    ;call syscallHandler
+
+	popState
+	iretq

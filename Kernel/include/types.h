@@ -8,8 +8,6 @@
 #ifndef TYPES_H_
 #define TYPES_H_
 
-typedef unsigned int size_t;
-
 typedef unsigned char byte;
 typedef short int word;
 typedef int dword;
