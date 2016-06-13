@@ -1,8 +1,7 @@
 #!/bin/bash
-cd ToolChain
+cd Toolchain
 make clean
 make all
 cd ..
 make clean
 make all
-./run.sh
