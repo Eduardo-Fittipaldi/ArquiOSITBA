@@ -4,6 +4,7 @@
 #include <moduleLoader.h>
 #include <naiveConsole.h>
 #include "types.h"
+#include "interrupts_c.h"
 #include "handlers.h"
 
 extern uint8_t text;
@@ -19,7 +20,6 @@ static void * const sampleCodeModuleAddress = (void*)0x400000;
 static void * const sampleDataModuleAddress = (void*)0x500000;
 
 typedef int (*EntryPoint)();
-
 
 void clearBSS(void * bssAddress, uint64_t bssSize)
 {
@@ -103,10 +103,14 @@ int main()
 
 	ncPrint("[Finished]");
 
+	//TODO: BORRAR
+	//ACA Empezamos
+
+	setup_idt();
+
 	ncClear();
-	int i = 0;
+
 	while (1) {
-		ncPrint(i++);
 	}
 
 	return 0;

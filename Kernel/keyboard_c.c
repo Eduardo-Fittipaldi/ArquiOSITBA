@@ -1,4 +1,6 @@
+#include "keyboard_c.h"
 #include "keyboard_asm.h"
+#include "naiveConsole.h"
 
 //TODO: Cambiar.
 const char* KEYS[] = {"", "ESC", "1", "2", "3", "4", "5", "6", "7", "8", "9", 				// 0 - 10
@@ -54,9 +56,9 @@ void printKey() {
 			//supr();
 		} else {										// Other
 			if (shiftPressed == 1) {
-				//video_print(SHIFT_KEYS[keyCode]);
+				ncPrint(SHIFT_KEYS[keyCode]);
 			} else {
-				//video_print(KEYS[keyCode]);
+				ncPrint(KEYS[keyCode]);
 			}
 		}
 	// Key Released

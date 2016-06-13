@@ -18,7 +18,7 @@ void ncPrint(const char * string)
 
 void ncPrintChar(char character)
 {
-	if (currentVideo >= 0xB8000 + (width*height*2)) {
+	if (currentVideo >= video + (width*height*2)) {
 		ncClear();
 	}
 	*currentVideo = character;

@@ -1,5 +1,7 @@
+#include "handlers.h"
 #include "types.h"
 #include "naiveConsole.h"
+#include "keyboard_c.h"
 
 
 void irqDispatcher(dword irq) {
@@ -16,10 +18,10 @@ void irqDispatcher(dword irq) {
 
 //Timer Tick
 void int_20(){
-    ncPrint("asd");
+//    ncPrint("asd");
 }
 
 //Keyboard Int
 void int_21() {
-    ncPrint("keyboard");
+    printKey();
 }
