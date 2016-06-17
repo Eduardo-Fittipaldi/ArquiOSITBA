@@ -1,12 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="CPP_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/Image/x64BareBonesImage.qcow2" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Image/x64BareBonesImage.img" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Image/packedKernel.bin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Image/x64BareBonesImage.vmdk" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Image/Makefile" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/kernel.bin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/include/moduleLoader.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/include/lib.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/include/interrupts.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/include/types.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/include/keyboard_asm.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/include/handlers.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/include/naiveConsole.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/include/defs.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/include/keyboard_c.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/asm/libasm.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/asm/interrupts.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/asm/keyboard_asm.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/lib.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/loader.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/naiveConsole.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/moduleLoader.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/kspace/include/input_output.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/kspace/syscalls_k.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/kspace/interrupts_c.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/Makefile" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/keyboard_c.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/handlers.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/video/vga_funcs.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/kernel.ld" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/kernel.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Kernel/Makefile.inc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/x64BareBones.png" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Makefile" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/License.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/Pure64 Manual.md" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/build.bat" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/readme.md" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/src/init/smp_ap.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/src/init/smp.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/src/init/acpi.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/src/init/pic.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/src/init/isa.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/src/init/cpu.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/src/pci.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/src/pure64.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/src/interrupt.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/src/bootsectors/bmfs_mbr.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/src/bootsectors/pxestart.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/src/syscalls.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/src/sysvar.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/bmfs_mbr.sys" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/pxestart.sys" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/pure64.sys" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/docs/LICENSE.TXT" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/docs/CREDITS.TXT" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Pure64/Makefile" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/BMFS/BareMetal File System.md" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/BMFS/bmfs.bin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/BMFS/README.md" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/BMFS/bmfs.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/BMFS/Makefile" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Bootloader/Makefile" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/x64BareBones.sublime-project" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Userland/0000-sampleCodeModule.bin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Userland/Makefile.inc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Userland/0001-sampleDataModule.bin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Userland/SampleCodeModule/sampleCodeModule.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Userland/SampleCodeModule/sampleCodeModule.ld" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Userland/SampleCodeModule/_loader.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Userland/SampleCodeModule/Makefile" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Userland/Makefile" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/.idea/vcs.xml" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/.idea/workspace.xml" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/.idea/ArquiOSITBA.iml" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/.idea/misc.xml" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/.idea/modules.xml" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/run.sh" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Readme.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test.sh" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Toolchain/Makefile" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Toolchain/ModulePacker/mp.bin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Toolchain/ModulePacker/modulePacker.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Toolchain/ModulePacker/main.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Toolchain/ModulePacker/Makefile" isTestSource="false" />
+    </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library name="Header Search Paths">
-        <CLASSES />
-        <SOURCES />
+        <CLASSES>
+          <root url="file://C:/MinGW/include" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.8.1/include-fixed" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.8.1/include" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://C:/MinGW/include" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.8.1/include-fixed" />
+          <root url="file://C:/MinGW/lib/gcc/mingw32/4.8.1/include" />
+        </SOURCES>
       </library>
     </orderEntry>
   </component>

@@ -9,7 +9,6 @@ GLOBAL _cli
 GLOBAL _sti
 GLOBAL picMasterMask
 GLOBAL picSlaveMask
-GLOBAL _lidt
 GLOBAL haltcpu
 
 GLOBAL _irq00Handler
@@ -18,8 +17,7 @@ GLOBAL _irq02Handler
 GLOBAL _irq03Handler
 GLOBAL _irq04Handler
 GLOBAL _irq05Handler
-
-GLOBAL int80Handler
+GLOBAL _int80Handler
 
 
 EXTERN irqDispatcher
@@ -27,7 +25,7 @@ EXTERN irqDispatcher
 EXTERN int_20
 EXTERN int_21
 
-;RowDaBoat - Wyrm - Kernel/CPU/irqHandlers.asm
+;Source: RowDaBoat - Wyrm - Kernel/CPU/irqHandlers.asm
 %macro	pushState 0
 	push rax
 	push rbx
@@ -48,7 +46,7 @@ EXTERN int_21
 	push gs
 %endmacro
 
-;RowDaBoat - Wyrm - Kernel/CPU/irqHandlers.asm
+; Source: RowDaBoat - Wyrm - Kernel/CPU/irqHandlers.asm
 %macro	popState 0
 	pop gs
 	pop fs
@@ -73,7 +71,7 @@ EXTERN int_21
 
 	pushState
 
-	mov rdi, %1	;Paso el parametro por rdi para llamar a irqDispatcher
+	mov rdi, %1	;Load parameter in rdi in preparation for C function call.
 
 	call irqDispatcher
 	
@@ -83,7 +81,8 @@ EXTERN int_21
 
 	popState
 
-	iretq		;iret de 64
+	iretq		;64bits iret
+
 %endmacro
 
 
@@ -102,29 +101,22 @@ _sti:
 picMasterMask:
     push rbp
     mov rbp, rsp
+
     mov rax, rdi		; Pasa por registro
     out	21h,al
+
     pop rbp
-    ret
+    retn
 
 picSlaveMask:
     push    rbp
     mov     rbp, rsp
+
     mov     rax, rdi  ; ax = mascara de 16 bits
     out	0A1h,al
-    pop     rbp
-    ret
 
-_lidt:				; Carga el IDTR
-    push    rbp
-    mov     rbp, rsp
-    push    rbx
-    mov     rbx, [rbp + 6] ; ds:bx = puntero a IDTR. TODO: ESTO FUNCIONA ASI?
-    rol	    rbx,16
-    lidt    [rbx]          ; carga IDTR
-    pop     rbx
     pop     rbp
-    ret
+    retn
 
 
 ;8254 Timer (Timer Tick)
@@ -157,7 +149,7 @@ haltcpu:
 	ret
 
 ;RowDaBoat - Wyrm - Kernel/CPU/irqHandlers.asm
-int80Handler:
+_int80Handler:
 	pushState
 
 ;TODO: Implementar

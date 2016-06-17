@@ -3,25 +3,25 @@
 #include <lib.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
+#include <Kernel/kspace/include/interrupts_k.h>
 #include "types.h"
-#include "interrupts_c.h"
-#include "handlers.h"
+#include "Kernel/kspace/include/handlers.h"
 
-extern uint8_t text;
-extern uint8_t rodata;
-extern uint8_t data;
-extern uint8_t bss;
-extern uint8_t endOfKernelBinary;
-extern uint8_t endOfKernel;
+extern byte text;
+extern byte rodata;
+extern byte data;
+extern byte bss;
+extern byte endOfKernelBinary;
+extern byte endOfKernel;
 
-static const uint64_t PageSize = 0x1000;
+static const qword PageSize = 0x1000;
 
 static void * const sampleCodeModuleAddress = (void*)0x400000;
 static void * const sampleDataModuleAddress = (void*)0x500000;
 
 typedef int (*EntryPoint)();
 
-void clearBSS(void * bssAddress, uint64_t bssSize)
+void clearBSS(void * bssAddress, qword bssSize)
 {
 	memset(bssAddress, 0, bssSize);
 }
@@ -29,9 +29,9 @@ void clearBSS(void * bssAddress, uint64_t bssSize)
 void * getStackBase()
 {
 	return (void*)(
-		(uint64_t)&endOfKernel
+		(qword)&endOfKernel
 		+ PageSize * 8				//The size of the stack itself, 32KiB
-		- sizeof(uint64_t)			//Begin at the top of the stack
+		- sizeof(qword)			//Begin at the top of the stack
 	);
 }
 
@@ -64,16 +64,16 @@ void * initializeKernelBinary()
 	clearBSS(&bss, &endOfKernel - &bss);
 
 	ncPrint("  text: 0x");
-	ncPrintHex((uint64_t)&text);
+	ncPrintHex((qword)&text);
 	ncNewline();
 	ncPrint("  rodata: 0x");
-	ncPrintHex((uint64_t)&rodata);
+	ncPrintHex((qword)&rodata);
 	ncNewline();
 	ncPrint("  data: 0x");
-	ncPrintHex((uint64_t)&data);
+	ncPrintHex((qword)&data);
 	ncNewline();
 	ncPrint("  bss: 0x");
-	ncPrintHex((uint64_t)&bss);
+	ncPrintHex((qword)&bss);
 	ncNewline();
 
 	ncPrint("[Done]");
@@ -83,35 +83,10 @@ void * initializeKernelBinary()
 }
 
 int main()
-{	
-	ncPrint("[Kernel Main]");
-	ncNewline();
-	ncPrint("  Sample code module at 0x");
-	ncPrintHex((uint64_t)sampleCodeModuleAddress);
-	ncNewline();
-	ncPrint("  Calling the sample code module returned: ");
-	ncPrintHex(((EntryPoint)sampleCodeModuleAddress)());
-	ncNewline();
-	ncNewline();
-
-	ncPrint("  Sample data module at 0x");
-	ncPrintHex((uint64_t)sampleDataModuleAddress);
-	ncNewline();
-	ncPrint("  Sample data module contents: ");
-	ncPrint((char*)sampleDataModuleAddress);
-	ncNewline();
-
-	ncPrint("[Finished]");
-
-	//TODO: BORRAR
-	//ACA Empezamos
-
+{
 	setup_idt();
 
 	ncClear();
-
-	while (1) {
-	}
 
 	return 0;
 }

@@ -8,10 +8,12 @@
 #ifndef TYPES_H_
 #define TYPES_H_
 
-typedef unsigned char byte;
-typedef short int word;
-typedef int dword;
-typedef unsigned long qword;
+#include <stdint.h>
+
+typedef uint8_t byte;
+typedef uint16_t word;
+typedef uint32_t dword;
+typedef uint64_t qword;
 
 typedef struct {
 	int x;
@@ -25,32 +27,25 @@ typedef struct {
 
 /* Descriptor de segmento */
 typedef struct {
-  word limit,
-       base_l;
-  byte base_m,
-       access,
-       attribs,
-       base_h;
+    word    limit,
+            base_l;
+    byte    base_m,
+            access,
+            attribs,
+            base_h;
 } DESCR_SEG;
-
 
 /* Descriptor de interrupcion */
 /* http://wiki.osdev.org/IDT - IDT in IA-32e Mode (64-bit IDT) */
 typedef struct {
-  word      offset_l,
-            selector;
-  byte      zero_1,
-            access;
-  word	    offset_m;
-  dword	    offset_h;
-  dword	    zero_2;
+	byte	zero_1,
+			access;
+  	word	offset_l,
+            selector,
+  			offset_m;
+  	dword	offset_h,
+			zero_2;
 } DESCR_INT;
-
-/* IDTR  */
-typedef struct {
-  word  limit;
-  dword base;
-} IDTR;
 
 #pragma pack(pop)
 

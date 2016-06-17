@@ -1,9 +1,8 @@
-#include "handlers.h"
+#include "Kernel/kspace/include/handlers.h"
 #include "types.h"
-#include "naiveConsole.h"
-#include "keyboard_c.h"
+#include "Kernel/kspace/include/keyboard_k.h"
 
-
+//Called from interrupts.asm
 void irqDispatcher(dword irq) {
     switch (irq) {
         case 0:
@@ -23,5 +22,5 @@ void int_20(){
 
 //Keyboard Int
 void int_21() {
-    printKey();
+    storeKey();
 }

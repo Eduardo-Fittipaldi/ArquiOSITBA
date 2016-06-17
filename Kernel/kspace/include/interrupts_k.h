@@ -1,12 +1,9 @@
 /*
- * interrups.h
- *
- *  Created on: Apr 18, 2010
- *      Author: anizzomc
+ * Basado en el template creado por @anizzomc.
  */
 
-#ifndef INTERRUPS_H
-#define INTERRUPS_H
+#ifndef INTERRUPTS_H
+#define INTERRUPTS_H
 
 #include "types.h"
 
@@ -15,21 +12,19 @@ void _cli(void);
 void _sti(void);
 
 void picMasterMask(byte mask);
-
 void picSlaveMask(byte mask);
-
-void lidt(IDTR *idtr);
 
 //Termina la ejecución de la cpu.
 void haltcpu(void);
 
 void _irq00Handler(void);
 void _irq01Handler(void);
-void _irq02Handler(void);
-void _irq03Handler(void);
-void _irq04Handler(void);
-void _irq05Handler(void);
-
 void int80Handler();
+
+void setup_idt();
+
+void setup_interrupts();
+
+void setup_IDT_entry (int index, byte selector, qword offset, byte access);
 
 #endif /* INTERRUPS_H */
