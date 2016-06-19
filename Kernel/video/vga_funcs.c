@@ -42,6 +42,36 @@ void putchar(char c, char f_color, char b_color){
     }
 }
 
+void printnum(int n, char f_color, char b_color){
+    int i,aux;
+    int count = 0;
+    char c;
+
+    if(n < 0){
+        putchar('-',f_color,b_color);
+        n *= -1;
+    }
+    aux = n;
+
+    while(aux != 0){
+        aux /= 10;
+        ++count;
+    }
+
+    while(count--){
+        aux = n;
+        i = count;
+        c = '0';
+
+        while(i--){
+            aux /= 10;
+        }
+
+        c += aux % 10;
+        putchar(c, f_color,b_color);
+    }
+}
+
 void delchar(void){
     //if the cursor is at the start of the screen, do nothing.
     if (cursor == 0) {

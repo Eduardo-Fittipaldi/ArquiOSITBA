@@ -32,6 +32,8 @@ void clear_screen(void);
 
 void putchar(char character,char foreground, char background);
 
+void printnum(int n, char f_color, char b_color);
+
 void delchar(void);
 
 void print(char* string);

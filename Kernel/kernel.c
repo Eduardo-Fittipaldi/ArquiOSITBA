@@ -88,7 +88,6 @@ void * initializeKernelBinary()
 
 int main()
 {
-	byte* buffer[20] = {0};
 	ncClear();
 	setup_idt();
 	initializeBuffer();
@@ -96,7 +95,6 @@ int main()
 	while(1){
 
 	}
-
 
 	return 0;
 }

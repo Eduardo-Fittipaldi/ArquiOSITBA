@@ -9,9 +9,9 @@
 #define VBE_DISPI_BANK_ADDRESS           0xA0000
 #define VBE_DISPI_BANK_SIZE_KB           64
 
-#define VBE_DISPI_MAX_XRES               2560
-#define VBE_DISPI_MAX_YRES               1600
-#define VBE_DISPI_MAX_BPP                32
+#define VBE_DISPI_XRES                  1024
+#define VBE_DISPI_YRES                  768
+#define VBE_DISPI_BPP_32                0x20
 
 #define VBE_DISPI_IOPORT_INDEX           0x01CE
 #define VBE_DISPI_IOPORT_DATA            0x01CF
@@ -29,7 +29,6 @@
 #define VBE_DISPI_INDEX_VIDEO_MEMORY_64K 0xa
 
 #define VBE_DISPI_ID5                    0xB0C5
-#define VBE_DISPI_BPP_32                 0x20
 
 #define VBE_DISPI_DISABLED               0x00
 #define VBE_DISPI_ENABLED                0x01
@@ -38,9 +37,15 @@
 #define VBE_DISPI_LFB_ENABLED            0x40
 #define VBE_DISPI_NOCLEARMEM             0x80
 
-#define VBE_DISPI_LFB_PHYSICAL_ADDRESS   0xE0000000
+#define VBE_DISPI_LFB_PHYSICAL_ADDRESS   0xFD000000
 
 #define VBE_DISPI_TOTAL_VIDEO_MEMORY_KB  (VBE_DISPI_TOTAL_VIDEO_MEMORY_MB * 1024)
 #define VBE_DISPI_TOTAL_VIDEO_MEMORY_BYTES (VBE_DISPI_TOTAL_VIDEO_MEMORY_KB * 1024)
 
-#endif //BGA_FUNCS_H
+void BgaSetVideoMode(void);
+void BgaSwitchVideoMode(void);
+void BgaPaintScreen(byte r, byte g, byte b);
+void BgaPaintSquare(int size, byte r, byte g, byte b);
+void BgaTest();
+
+#endif //BGA_FUNCS_H1
