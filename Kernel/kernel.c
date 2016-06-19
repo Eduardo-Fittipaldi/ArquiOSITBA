@@ -3,9 +3,13 @@
 #include <lib.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
-#include <Kernel/kspace/include/interrupts_k.h>
+#include <interrupts_k.h>
+#include <vga_funcs.h>
+#include <test.h>
+#include <syscalls_k.h>
+#include <keyboard_k.h>
 #include "types.h"
-#include "Kernel/kspace/include/handlers.h"
+#include "handlers.h"
 
 extern byte text;
 extern byte rodata;
@@ -84,9 +88,15 @@ void * initializeKernelBinary()
 
 int main()
 {
-	setup_idt();
-
+	byte* buffer[20] = {0};
 	ncClear();
+	setup_idt();
+	initializeBuffer();
+
+	while(1){
+
+	}
+
 
 	return 0;
 }

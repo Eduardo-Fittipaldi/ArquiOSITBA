@@ -1,7 +1,9 @@
 GLOBAL _read_byte
 GLOBAL _read_word
+GLOBAL _read_dword
 GLOBAL _write_byte
 GLOBAL _write_word
+GLOBAL _write_dword
 
 section .text
 
@@ -33,6 +35,20 @@ _read_word:
     pop rbp
     ret
 
+; _read_dword(word address) :
+;   returns 4 bytes from the I/OM at the given address.
+;   dx: address.
+_read_dword:
+    push rbp
+    mov rbp, rsp
+
+    mov rdx, rdi
+    in eax, dx
+
+    mov rsp, rbp
+    pop rbp
+    ret
+
 ; _write_byte(word address, byte data):
 ;   writes a byte in the I/OM at the given address.
 ;   dx: address.
@@ -49,7 +65,7 @@ _write_byte:
 ; _write_word(word address, word data):
 ;   writes 2 bytes in the I/OM at the given address.
 ;   dx: address.
-;   al: word of data.
+;   ax: word of data.
 _write_word:
 	push rbp
 	mov rbp, rsp
@@ -61,3 +77,19 @@ _write_word:
 	mov rsp, rbp
 	pop rbp
 	ret
+
+; _write_dword(word address, dword data):
+;   writes 4 bytes in the I/OM at the given address.
+;   dx: address.
+;   eax: dword of data.
+_write_dword:
+    push rbp
+    mov rbp, rsp
+
+    mov rdx, rdi
+    mov rax, rsi
+    out dx, eax
+
+    mov rsp, rbp
+    pop rbp
+    ret

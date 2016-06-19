@@ -30,8 +30,11 @@
 
 void clear_screen(void);
 
-void putchar(char,char,char);
+void putchar(char character,char foreground, char background);
 
 void delchar(void);
 
+void print(char* string);
+
+void color_print(char* string, char foreground, char background);
 #endif //VGA_FUNCS_H

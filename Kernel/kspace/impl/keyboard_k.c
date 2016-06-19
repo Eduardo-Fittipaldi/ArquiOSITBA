@@ -1,25 +1,29 @@
-#include <Kernel/kspace/include/input_output.h>
-#include <Kernel/kspace/include/syscalls_k.h>
-#include "Kernel/kspace/include/keyboard_k.h"
+#include <input_output.h>
+#include <syscalls_k.h>
+#include <vga_funcs.h>
+#include <test.h>
+#include "keyboard_k.h"
 #include "naiveConsole.h"
+#include "keyboard_scancode.h"
 
-//TODO: Cambiar.
+//Internal method declarations
+char convertKey(byte);
+char proccessControlCode(byte);
+char checkControlBit(byte);
+void processControlCode(byte);
+void initializeBuffer(void);
 
-static int ctrlPressed = 0;
-static int shiftPressed = 0;
-static int altPressed = 0;
-static int numLock = 0;
-static int mapSize = 90;
-//Kernel Keyboard buffer
-static unsigned char kBuffer[BUFFER_SIZE] = {0};
+//Kernel Keyboard buffer variables
+static dword controlCharacters;
+static char kBuffer[BUFFER_SIZE] = {EMPTY};
+static char testBuffer[BUFFER_SIZE] = {0};
 static unsigned char readCounter = 0;
 static unsigned char writeCounter = 0;
 
-unsigned char getKey(void) {
-    if(isEmpty()){
-        return 0;
-    }
-    unsigned char key = kBuffer[readCounter++];
+
+char getKey(void) {
+    char key = kBuffer[readCounter];
+    kBuffer[readCounter++] = (char)EMPTY;
     if(readCounter == BUFFER_SIZE){
         readCounter = 0;
     }
@@ -27,81 +31,185 @@ unsigned char getKey(void) {
 }
 
 void storeKey(void){
-    byte scanCode = _read_byte(0x60);
-    unsigned char key = convertKey(scanCode);
-    if(key == 0 ){
+    char key = convertKey(_read_byte(0x60));
+    if(key == NOWRITE){
         return;
     }
+    kBuffer[writeCounter++] = key;
     if(writeCounter == BUFFER_SIZE){
         //If the Buffer is currently at the last character,
         //the start of the buffer is written again.
         writeCounter = 0;
     }
-    kBuffer[writeCounter] = key;
     return;
 }
 
 char convertKey(byte keyCode){
-    // Key Pressed
-    if (keyCode >= 0 && keyCode < mapSize) {
-        switch(keyCode){
-            case 0x1C: // ENTER
-                break;
-            case 0x0E: //BACKSPACE
-                break;
-            case 0x2A: //LSHIFT
-                shiftPressed ^= 1;
-                break;
-            case 0x36: //RSHIFT
-                shiftPressed ^= 1;
-                break;
-            case 0x3A: //CAPSLOCK
-                shiftPressed ^= 1;
-                break;
-            case 0x1D: //LCTRL
-                ctrlPressed ^= 1;
-                break;
-            case 0x48: //UP ARROW
-                if(shiftPressed){
-                }
-                break;
-            case 0x50: //DOWN ARROW
-                if(shiftPressed){
-                }
-                break;
-            case 0x4B: //LEFT ARROW
-                if(shiftPressed){
-                }
-                break;
-            case 0x4D: //RIGHT ARROW
-                if(shiftPressed){
-                }
-                break;
-            case 0x53: //SUPR
-                if(shiftPressed){
-                    //delete()
-                }
-                break;
-            default:
-                if(shiftPressed){
-                    return *SHIFT_KEYS[keyCode];
-                } else {
-                    return *KEYS[keyCode];
-                }
-        }
-    }// Key Released
-    else {
-        if (keyCode == 0xB7 || keyCode == 0xAA) {			// L/R Shift
-            shiftPressed ^= 1;
-        }
-        if (keyCode == 157) {							// Ctrl
-            ctrlPressed ^= 1;
-        }
+    char key;
+    processControlCode(keyCode);
+
+    if(keyCode < 0){
+//        print("KEYCODE < 0\n");
+        return NOWRITE;
     }
 
-    return 0;
+    if(keyCode >= mapSize) {
+//        print("KEYCODE >= MAPSIZE\n");
+        return NOWRITE;
+    }
+
+    if(checkControlBit(1)){
+        key = SHIFT_KEYS[keyCode];
+    } else {
+        key = KEYS[keyCode];
+    }
+
+    if(IS_CONTROL(key)){
+//        print("IS_CONTROL\n");
+        return NOWRITE;
+    }
+
+    if(IS_LETTER(key) && checkControlBit(4)){
+        key = (char)('A' + (key - 'a'));
+    }else if(IS_DIGIT(key) && !checkControlBit(3)){
+//        print("NUMLOCK NOT ACTIVATED\n");
+        key = NOWRITE;
+    }
+
+    return key;
 }
 
-unsigned char isEmpty(void) {
-    return kBuffer[readCounter] == 0;
+char kbBufferIsEmpty(void) {
+    return kBuffer[readCounter] == EMPTY;
+}
+
+/* void processControlNode(byte keyCode)
+ * How it works:
+ * Every time a CONTROL_CODE value is read, this function is called.
+ * What it does is it switches a bit in a variable with 32 bits, depending on wether
+ * that specific control key is pressed or not.
+ *
+ * Bit 0: Ctrl bit
+ * Bit 1: Shift bit
+ * Bit 2: Alt bit
+ * Bit 3: Numlock bit
+ * Bit 4: Capslock bit
+ * Bit 5-19: Reserved
+ * Bit 20-31: F1-F12 bits
+ *
+ * NOTE: F1-F12 function as switches in this OS.
+ */
+void processControlCode(byte keyCode){
+    switch(keyCode) {
+        case CTRL_PRESSED:
+            controlCharacters |= 1;
+            break;
+        case LSHIFT_PRESSED:
+            controlCharacters |= (1 << 1);
+            controlCharacters ^= (1<<4);
+            break;
+        case RSHIFT_PRESSED:
+            controlCharacters |= (1 << 1);
+            controlCharacters ^= (1<<4);
+            break;
+        case ALT_PRESSED:
+            controlCharacters |= (1 << 2);
+            break;
+        case NUMLCK_PRESSED:
+            controlCharacters ^= 1 << 3;
+            break;
+        case CAPS_PRESSED:
+            controlCharacters ^= 1 << 4;
+            break;
+        case F1_PRESSED:
+            printBufferContents();
+            controlCharacters ^= 1 << 20;
+            break;
+        case F2_PRESSED:
+            _callerino(SYS_READ, (qword)testBuffer, (qword)5, (qword)0);
+            controlCharacters ^= 1 << 21;
+            break;
+        case F3_PRESSED:
+            _callerino(SYS_WRITE, O_DEF_CNL,(qword)testBuffer,5);
+            controlCharacters ^= 1 << 22;
+            break;
+        case F4_PRESSED:
+            controlCharacters ^= 1 << 23;
+            break;
+        case F5_PRESSED:
+            controlCharacters ^= 1 << 24;
+            break;
+        case F6_PRESSED:
+            controlCharacters ^= 1 << 25;
+            break;
+        case F7_PRESSED:
+            controlCharacters ^= 1 << 26;
+            break;
+        case F8_PRESSED:
+            controlCharacters ^= 1 << 27;
+            break;
+        case F9_PRESSED:
+            controlCharacters ^= 1 << 28;
+            break;
+        case F10_PRESSED:
+            controlCharacters ^= 1 << 29;
+            break;
+        case F11_PRESSED:
+            controlCharacters ^= 1 << 30;
+            break;
+        case F12_PRESSED:
+            controlCharacters ^= 1 << 31;
+            break;
+        case LSHIFT_RELEASED:
+            controlCharacters &= 0xFFFD;
+            controlCharacters ^= (1<<4);
+            break;
+        case RSHIFT_RELEASED:
+            controlCharacters &= 0xFFFD;
+            controlCharacters ^= (1<<4);
+            break;
+        case ALT_RELEASED:
+            controlCharacters &= 0xFFFB;
+            controlCharacters ^= (1<<4);
+            break;
+        case CTRL_RELEASED:
+            controlCharacters &= 0xFFFE;
+            controlCharacters ^= (1<<4);
+        default:
+            return;
+    }
+}
+
+char checkControlBit(byte bit){
+    return (char) ((controlCharacters >> bit) & 1);
+}
+
+void printBufferContents(void){
+    int i;
+    char background;
+    for (i = 0; i < BUFFER_SIZE; i++) {
+        background = WHITE;
+        if(i == readCounter && i == writeCounter){
+            background = MAGENTA;
+        }else if(i == writeCounter){
+            background = RED;
+        }else if(i == readCounter){
+            background = BLUE;
+        }
+        if(kBuffer[i] != EMPTY){
+            putchar(kBuffer[i], GREEN, background);
+        }else{
+            putchar('.', GREEN, background);
+        }
+
+    }
+    putchar(' ',WHITE, GREEN);
+    putchar('\n',WHITE, GREEN);
+}
+
+void initializeBuffer(void){
+    int i;
+    for (i = 0; i < BUFFER_SIZE; i++) {
+        kBuffer[i] = EMPTY;
+    }
 }

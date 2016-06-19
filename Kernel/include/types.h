@@ -38,13 +38,13 @@ typedef struct {
 /* Descriptor de interrupcion */
 /* http://wiki.osdev.org/IDT - IDT in IA-32e Mode (64-bit IDT) */
 typedef struct {
-	byte	zero_1,
-			access;
-  	word	offset_l,
-            selector,
-  			offset_m;
-  	dword	offset_h,
-			zero_2;
+	word    offset_l;
+	word    selector;
+	byte     zero_1;
+	byte     access;
+	word    offset_m;
+	dword    offset_h;
+	dword    zero_2;
 } DESCR_INT;
 
 #pragma pack(pop)

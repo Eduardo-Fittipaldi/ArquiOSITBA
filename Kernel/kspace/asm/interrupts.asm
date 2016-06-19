@@ -21,6 +21,7 @@ GLOBAL _int80Handler
 
 
 EXTERN irqDispatcher
+EXTERN syscallHandler
 ;TODO: Se usan?
 EXTERN int_20
 EXTERN int_21
@@ -150,10 +151,11 @@ haltcpu:
 
 ;RowDaBoat - Wyrm - Kernel/CPU/irqHandlers.asm
 _int80Handler:
-	pushState
+    push rbp
+    mov rbp, rsp
 
-;TODO: Implementar
-    ;call syscallHandler
+    call syscallHandler
 
-	popState
-	iretq
+    mov rsp, rbp
+    pop rbp
+    iretq

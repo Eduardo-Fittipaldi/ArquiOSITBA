@@ -1,8 +1,21 @@
-#include <include/syscalls_k.h>
+#include <syscalls_k.h>
 #include <types.h>
 #include <vga_funcs.h>
-#include <Kernel/video/include/vga_funcs.h>
-#include <Kernel/kspace/include/keyboard_k.h>
+#include <vga_funcs.h>
+#include <keyboard_k.h>
+
+void syscallHandler(qword mode, qword arg1, qword arg2, qword arg3){
+    switch(mode){
+        case SYS_WRITE:
+            sys_write(arg1,arg2,arg3);
+            break;
+        case SYS_READ:
+            sys_read(arg1,arg2,arg3);
+            break;
+        case SYS_VIDEO:
+            break;
+    }
+}
 
 void sys_write(char channel, char * string, unsigned int size){
     char foreground;
@@ -25,18 +38,14 @@ void sys_write(char channel, char * string, unsigned int size){
         default:
             return;
     }
-
-    while(curr < size && string[curr] != 0){
-        putchar(string[curr],foreground,background);
+    while(curr < size && string[curr]){
+        putchar(string[curr++],foreground,background);
     }
 }
 
-void sys_read(char channel, char * dest, unsigned int size){
+void sys_read(char * dest, unsigned int size, qword arg3) {
     unsigned int curr = 0;
-    switch(channel){
-        case I_DEF_CNL:
-            while(curr < size && isEmpty()){
-                dest[curr++] = getKey();
-            }
+    while (curr < size && !kbBufferIsEmpty()) {
+        dest[curr++] = getKey();
     }
 }

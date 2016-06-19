@@ -19,7 +19,7 @@ void haltcpu(void);
 
 void _irq00Handler(void);
 void _irq01Handler(void);
-void int80Handler();
+void _int80Handler(void);
 
 void setup_idt();
 
