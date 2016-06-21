@@ -34,24 +34,12 @@ void BgaSetVideoMode()
     BgaWriteRegister(VBE_DISPI_INDEX_ENABLE, VBE_DISPI_ENABLED | VBE_DISPI_LFB_ENABLED);
 }
 
-void BgaDisableVideoMode(){
-    BgaWriteRegister(VBE_DISPI_INDEX_ENABLE, VBE_DISPI_DISABLED);
-}
-
-void BgaSwitchVideoMode(){
-    if(BgaReadRegister(VBE_DISPI_INDEX_ENABLE) == VBE_DISPI_ENABLED){
-        BgaDisableVideoMode();
-    }else{
-        BgaSetVideoMode();
-    }
-}
-
 void BgaSetBank(unsigned short BankNumber)
 {
     BgaWriteRegister(VBE_DISPI_INDEX_BANK, BankNumber);
 }
 
-dword BgaConvertColors(byte r, byte g, byte b){
+static dword BgaConvertColors(byte r, byte g, byte b){
     dword final_color = 0;
     final_color |= (r<<(8*2));
     final_color |= (g<<(8*1));
@@ -59,16 +47,16 @@ dword BgaConvertColors(byte r, byte g, byte b){
     return final_color;
 }
 
-void BgaDrawPixel(int x, int y, byte r, byte g, byte b) {
+void BgaDrawPixel(int x, int y, qword color) {
     int offset = (y*VBE_DISPI_XRES + x);
-    lfb_dir[offset] = BgaConvertColors(r,g,b);
+    lfb_dir[offset] = color;
 }
 
 void BgaPaintScreen(byte r, byte g, byte b){
     int i,j;
     for(i = 0 ; i < VBE_DISPI_XRES ; i++){
         for(j = 0 ; j < VBE_DISPI_YRES ; j++) {
-            BgaDrawPixel(i, j, r, g, b);
+            BgaDrawPixel(i, j, BgaConvertColors(r,g,b));
         }
     }
 }
@@ -86,7 +74,7 @@ void BgaTest(){
             if(r==255){
                 r=0;
             }
-            BgaDrawPixel(i, j, r, r, r);
+            BgaDrawPixel(i, j, BgaConvertColors(r,g,b));
             r++;
         }
     }
@@ -96,7 +84,7 @@ void BgaPaintSquare(int size, byte r, byte g, byte b){
     int i,j;
     for(i = 0; i< size; i++){
         for(j = 0 ; j < size; j++){
-            BgaDrawPixel(i,j,r,g,b);
+            BgaDrawPixel(i,j, BgaConvertColors(r,g,b));
         }
     }
 }

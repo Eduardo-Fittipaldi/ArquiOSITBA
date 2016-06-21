@@ -24,10 +24,14 @@ static unsigned char writeCounter = 0;
 
 char getKey(void) {
     char key = kBuffer[readCounter];
+    if(readCounter == writeCounter || key == EMPTY){
+        return 0;
+    }
     kBuffer[readCounter++] = (char)EMPTY;
     if(readCounter == BUFFER_SIZE){
         readCounter = 0;
     }
+
     return key;
 }
 
@@ -127,15 +131,15 @@ void processControlCode(byte keyCode){
             controlCharacters ^= 1 << 20;
             break;
         case F2_PRESSED:
-            _callerino(SYS_READ, (qword)testBuffer, (qword)5, (qword)0);
+            _callerino(SYS_READ, STDIN, (qword)testBuffer, (qword)5);
             controlCharacters ^= 1 << 21;
             break;
         case F3_PRESSED:
-            _callerino(SYS_WRITE, O_DEF_CNL,(qword)testBuffer,5);
+            _callerino(SYS_WRITE, STDOUT,(qword)testBuffer,5);
             controlCharacters ^= 1 << 22;
             break;
         case F4_PRESSED:
-            BgaSwitchVideoMode();
+            BgaSetVideoMode();
 //            BgaPaintScreen(100,100,100);
             BgaTest();
             controlCharacters ^= 1 << 23;

@@ -92,9 +92,7 @@ int main()
 	setup_idt();
 	initializeBuffer();
 
-	while(1){
-
-	}
+	((EntryPoint)sampleCodeModuleAddress)();
 
 	return 0;
 }

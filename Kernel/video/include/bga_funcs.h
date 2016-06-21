@@ -43,9 +43,9 @@
 #define VBE_DISPI_TOTAL_VIDEO_MEMORY_BYTES (VBE_DISPI_TOTAL_VIDEO_MEMORY_KB * 1024)
 
 void BgaSetVideoMode(void);
-void BgaSwitchVideoMode(void);
 void BgaPaintScreen(byte r, byte g, byte b);
 void BgaPaintSquare(int size, byte r, byte g, byte b);
+void BgaDrawPixel(int x, int y, qword color);
 void BgaTest();
 
 #endif //BGA_FUNCS_H1

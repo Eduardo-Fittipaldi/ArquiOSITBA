@@ -3,6 +3,9 @@
 #include <vga_funcs.h>
 #include <vga_funcs.h>
 #include <keyboard_k.h>
+#include <bga_funcs.h>
+
+static void sys_read_stdin(char * dest, unsigned int size);
 
 void syscallHandler(qword mode, qword arg1, qword arg2, qword arg3){
     switch(mode){
@@ -13,25 +16,28 @@ void syscallHandler(qword mode, qword arg1, qword arg2, qword arg3){
             sys_read(arg1,arg2,arg3);
             break;
         case SYS_VIDEO:
+            sys_video(arg1, arg2, arg3);
             break;
+        case SYS_PAINT:
+            sys_paint(arg1,arg2,arg3);
     }
 }
 
-void sys_write(char channel, char * string, unsigned int size){
+void sys_write(unsigned int channel, char * string, unsigned int size){
     char foreground;
     char background;
     unsigned int curr = 0;
 
     switch(channel){
-        case O_DEF_CNL:
+        case STDOUT:
             foreground = WHITE;
             background = BLACK;
             break;
-        case O_ERR_CNL:
+        case STDERR:
             foreground = BLACK;
             background = RED;
             break;
-        case O_DBG_CNL:
+        case STDDBG:
             foreground = GREEN;
             background = BLACK;
             break;
@@ -43,9 +49,32 @@ void sys_write(char channel, char * string, unsigned int size){
     }
 }
 
-void sys_read(char * dest, unsigned int size, qword arg3) {
-    unsigned int curr = 0;
-    while (curr < size && !kbBufferIsEmpty()) {
-        dest[curr++] = getKey();
+void sys_read(unsigned int channel, char * dest, unsigned int size) {
+    switch(channel){
+        case STDIN:
+            sys_read_stdin(dest,size);
+            break;
+        default:
+            return;
     }
+}
+
+static void sys_read_stdin(char * dest, unsigned int size){
+    int i = 0;
+    char c;
+
+    while (i < size) {
+        c = getKey();
+        dest[i++] = c;
+    }
+
+    return;
+}
+
+void sys_video(qword arg1, qword arg2, qword arg3){
+    BgaSetVideoMode();
+}
+
+void sys_paint(int x, int y, qword color){
+    BgaDrawPixel(x,y,color);
 }

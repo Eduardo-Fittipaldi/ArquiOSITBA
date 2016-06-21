@@ -49,5 +49,5 @@ int ispunct(int c){
 }
 //This function checks whether the passed character is control character.
 int iscntrl(int c){
-    return (BETWEEN(c,0,31) || c == 127)
+    return (BETWEEN(c,0,31) || c == 127);
 }

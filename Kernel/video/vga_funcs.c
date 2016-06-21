@@ -95,8 +95,10 @@ void delchar(void){
 }
 
 void next_line(void){
-    cursor -= cursor % COLS;
-    cursor += COLS*2;
+
+    int row_size = COLS*2;
+    cursor -= cursor % row_size;
+    cursor += row_size;
     return;
 }
 

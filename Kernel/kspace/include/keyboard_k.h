@@ -1,7 +1,7 @@
 #ifndef KEYBOARD_K_H
 #define KEYBOARD_K_H
 
-#define BUFFER_SIZE 10
+#define BUFFER_SIZE 255
 #define BETWEEN(x,y,z) (x >= y && x <= z)
 #define IS_LETTER(x) (BETWEEN(x,'A','Z')|BETWEEN(x,'a','z'))
 #define IS_SPACE(x) (x == ' ')
