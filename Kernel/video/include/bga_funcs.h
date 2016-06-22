@@ -2,8 +2,7 @@
 #define BGA_FUNCS_H
 
 
-//SOURCE: OSDEV WIKI.
-
+//SOURCE: OSDEV WIKI. http://wiki.osdev.org/Bochs_VBE_Extensions
 #define VBE_DISPI_TOTAL_VIDEO_MEMORY_MB  16
 #define VBE_DISPI_4BPP_PLANE_SHIFT       22
 

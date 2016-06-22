@@ -3,6 +3,7 @@
 
 typedef int (*command_fn)(char * arg);
 
+//TODO: CAMBIAR COMENTARIO?
 //RECORDAR CAMBIAR COMMANDS_AMOUNT O SE VA TODO AL CARAJO
 typedef enum{
     ECHO,

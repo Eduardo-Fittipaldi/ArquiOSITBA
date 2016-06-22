@@ -99,7 +99,7 @@ static void addCommand(command_id id, command_fn fnc, char* name, char* desc){
 static void setCommands(){
     addCommand(ECHO,echo,"echo","echo [string] \n Prints a given string.");
     addCommand(HELP,help,"help","help [command] \n Gives information on a given command.");
-    addCommand(FRACTAL,fractal,"fractal"," fractal [type] \n Enters video mode and prints a fractal on screen");
+    addCommand(FRACTAL,fractal,"fractal"," fractal [type] \n Types: sierp, julia \n Enters video mode and prints a fractal on screen");
 }
 
 static char* formatBuffer(){

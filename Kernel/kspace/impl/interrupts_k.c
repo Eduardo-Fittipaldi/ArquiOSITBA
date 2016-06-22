@@ -23,7 +23,7 @@ void setup_interrupts() {
 }
 
 
-// Source: KernelIDT TP5 y TODO: Pagina IDT osdev. Falta hacer & a los bits
+// Source: KernelIDT TP5 y http://wiki.osdev.org/Interrupt_Descriptor_Table
 void setup_IDT_entry (int index, byte selector, qword offset, byte access) {
     idt[index].selector = selector;
     idt[index].offset_l = (word)(offset & 0xFFFF);

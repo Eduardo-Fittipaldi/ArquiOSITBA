@@ -1,8 +1,7 @@
 #include "syscalls.h"
 #include "stdio.h"
-#include "limits.h"
 
-#define EOF 0xFF
+#define EOF '\0'
 #define NULL -2
 static int print_arg(unsigned int channel, va_list ap, char option);
 static int print_hex(unsigned int channel, int hex);
@@ -90,36 +89,14 @@ static int print_arg(unsigned int channel, va_list ap, char option) {
         case 's':
             written += fputs(channel, va_arg(ap, char *));
             break;
-        case 'x':
-            written += print_hex(channel, va_arg(ap, int));
-            break;
         case 'd':
             written += print_dec(channel, va_arg(ap, int));
             break;
-        case 'o':
-            written = print_oct(channel, va_arg(ap, int));
-            break;
-        case 'b':
-            written = print_bin(channel, va_arg(ap, int));
-            break;
-        case 'c':
-            fputc(channel, va_arg(ap, int) & UCHAR_MAX);
-            written++;
-            break;
+
         default:
             return written;		// error de formato
     }
 
-    return written;
-}
-
-static int print_hex(unsigned int channel, int num) {
-    int digits, written;
-    char buffer[20];
-    digits =  num_to_base(num, buffer, 16);
-    written = fputsn(channel, buffer, digits);
-    // fputc(channel, 'h');
-    // written++;
     return written;
 }
 
@@ -134,20 +111,6 @@ static int print_dec(unsigned int channel, int num) {
     }
     digits = num_to_base(num, buffer, 10);
     return fputsn(channel, buffer, digits) + negative;
-}
-
-static int print_oct(unsigned int channel, int num) {
-    int digits;
-    char buffer[20];
-    digits =  num_to_base(num, buffer, 8);
-    return fputsn(channel, buffer, digits);
-}
-
-static int print_bin(unsigned int channel, int num) {
-    int digits;
-    char buffer[20];
-    digits =  num_to_base(num, buffer, 2);
-    return fputsn(channel, buffer, digits);
 }
 
 static int num_to_base(unsigned int value, char * buffer, unsigned int base) {
@@ -220,17 +183,6 @@ char * fgets(unsigned int channel, char * str, int n) {
     return str;
 }
 
-int scanf(const char * fmt, ...) {
-    va_list ap;
-    int read;
-
-    va_start(ap, fmt);
-    read = vfscanf(STDIN, fmt, ap);
-    va_end(ap);
-
-    return read;
-}
-
 int fscanf(unsigned int channel, const char * fmt, ...) {
     va_list ap;
     int read;
@@ -242,12 +194,6 @@ int fscanf(unsigned int channel, const char * fmt, ...) {
     return read;
 }
 
-//TODO
-int sscanf(const char * str, const char * fmt, ...) {
-    return -1;
-}
-
-//TODO
 int vfscanf(unsigned int channel, const char * fmt, va_list ap) {
     int read = 0;
     char c;
@@ -272,9 +218,6 @@ static int read_arg(unsigned int channel, va_list ap, char option) {
     char * arg;
 
     switch (option) {
-        case 's':
-            read = read_str(channel, va_arg(ap, char *));
-            break;
         case 'd':
             read = read_dec(channel, va_arg(ap, int *));
             break;
@@ -282,7 +225,6 @@ static int read_arg(unsigned int channel, va_list ap, char option) {
             read = 1;
             arg = va_arg(ap, char *);
             (*arg) = fgetc(channel);
-            fputc(STDOUT, *arg);
             break;
         default:
             break;
@@ -291,31 +233,12 @@ static int read_arg(unsigned int channel, va_list ap, char option) {
     return read;
 }
 
-// si hay mas de un espacio se rompe todo
-static int read_str(unsigned int channel, char * ptr) {
-    char c;
-    int read = 0;
-
-    while ((c = fgetc(channel)) != EOF && c != '\n' && c != ' ') {
-        if (c > 0) {
-            ptr[read++] = c;
-        }
-    }
-
-    if (read == 0 && c == EOF) {
-        return 0;
-    }
-
-    ptr[read] = 0;
-    return 1;
-}
-
 static int read_dec(unsigned int channel, int * ptr) {
     int number = 0;
     int digits = 0;
     char c;
 
-    while (digits < 9 && (c = fgetc(channel)) != '\n' && c != EOF && c != ' ') {
+    while (digits < 9 && (c = fgetc(channel))  != '\n' && c != EOF && c != ' ') {
         if (c < '0' || c > '9') {
             return 0;
         }
@@ -324,5 +247,6 @@ static int read_dec(unsigned int channel, int * ptr) {
     }
 
     *ptr = number;
+    printf("%d\n",*ptr);
     return digits>0;
 }

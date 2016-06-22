@@ -22,7 +22,7 @@ GLOBAL _int80Handler
 
 EXTERN irqDispatcher
 EXTERN syscallHandler
-;TODO: Se usan?
+
 EXTERN int_20
 EXTERN int_21
 

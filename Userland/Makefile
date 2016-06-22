@@ -10,7 +10,7 @@ sampleCodeModule:
 
 fractalDataModule:
 	rm -rf $(SAMPLE_DATA)
-    cat $(FRACTAL_SOURCE) >> $(SAMPLE_DATA) && dd if=/dev/zero bs=1 count=1 >> $(SAMPLE_DATA)
+	cat $(FRACTAL_SOURCE) >> $(SAMPLE_DATA) && dd if=/dev/zero bs=1 count=1 >> $(SAMPLE_DATA)
 
 clean:
 	cd SampleCodeModule; make clean

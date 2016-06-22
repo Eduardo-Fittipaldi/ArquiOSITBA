@@ -16,9 +16,7 @@ int getchar(void);
 int fgetc(unsigned int channel);
 char * gets(char * str, int n);
 char * fgets(unsigned int channel, char * str, int n);
-int scanf(const char * fmt, ...);
 int fscanf(unsigned int channel, const char * fmt, ...);
-int sscanf(const char * str, const char * fmt, ...);
 int vfscanf(unsigned int channel, const char * fmt, va_list ap);
 
 

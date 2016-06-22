@@ -58,8 +58,9 @@ int fractal(char * arg){
         juliaSet();
     }
     if(!strcmp(arg,"sierp")){
-        int iter,x1,x2,x3,y1,y2,y3;
+        int iter = 0 ,x1 = 1,x2 = 2,x3 = 3,y1 = 4,y2 = 5,y3 = 6;
         int args = fscanf(STDFRACTAL, "%d %d %d %d %d %d %d", &iter, &x1, &y1, &x2, &y2, &x3, &y3);
+
         if(args != 7){
             fprintf(STDERR, "Invalid File Format!\n");
             return -1;

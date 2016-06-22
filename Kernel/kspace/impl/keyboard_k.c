@@ -2,7 +2,6 @@
 #include <syscalls_k.h>
 #include <vga_funcs.h>
 #include <bga_funcs.h>
-#include <test.h>
 #include "keyboard_k.h"
 #include "naiveConsole.h"
 #include "keyboard_scancode.h"
@@ -124,36 +123,24 @@ void processControlCode(byte keyCode){
             controlCharacters ^= 1 << 4;
             break;
         case F1_PRESSED:
-            printBufferContents();
             controlCharacters ^= 1 << 20;
             break;
         case F2_PRESSED:
-            _callerino(SYS_READ, STDIN, (qword)testBuffer, (qword)5);
             controlCharacters ^= 1 << 21;
             break;
         case F3_PRESSED:
-            _callerino(SYS_WRITE, STDOUT,(qword)testBuffer,5);
             controlCharacters ^= 1 << 22;
             break;
         case F4_PRESSED:
-            BgaSetVideoMode();
-//            BgaPaintScreen(100,100,100);
-            BgaTest();
             controlCharacters ^= 1 << 23;
             break;
         case F5_PRESSED:
-            BgaPaintSquare(300,0xff,0,0);
-            BgaPaintSquare(275,0xff,0xff,0);
             controlCharacters ^= 1 << 24;
             break;
         case F6_PRESSED:
-            BgaPaintSquare(250,0,0xff,0);
-            BgaPaintSquare(225,0,0xff,0xff);
             controlCharacters ^= 1 << 25;
             break;
         case F7_PRESSED:
-            BgaPaintSquare(200,0,0,0xff);
-            BgaPaintSquare(175,0xff,0,0xff);
             controlCharacters ^= 1 << 26;
             break;
         case F8_PRESSED:

@@ -39,15 +39,14 @@ int toupper(int c){
     return c;
 }
 
-//This function checks whether the passed character has graphical representation using locale.
 int isgraph(int c){
     return (isalnum(c) || ispunct(c));
 }
-//This function checks whether the passed character is a punctuation character.
+
 int ispunct(int c){
     return IS_PUNCT(c);
 }
-//This function checks whether the passed character is control character.
+
 int iscntrl(int c){
     return (BETWEEN(c,0,31) || c == 127);
 }

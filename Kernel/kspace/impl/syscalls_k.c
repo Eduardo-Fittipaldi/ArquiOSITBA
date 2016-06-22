@@ -6,7 +6,7 @@
 #include <bga_funcs.h>
 
 static void sys_read_stdin(char * dest, unsigned int size);
-static void read_fractal(char * buffer, int len);
+static void sys_read_fractal(char * buffer, int len);
 
 void syscallHandler(qword mode, qword arg1, qword arg2, qword arg3){
     switch(mode){
@@ -56,7 +56,7 @@ void sys_read(unsigned int channel, char * dest, unsigned int size) {
             sys_read_stdin(dest,size);
             break;
         case STDFRACTAL:
-            read_fractal(dest, size);
+            sys_read_fractal(dest, size);
             break;
         default:
             return;
@@ -64,23 +64,30 @@ void sys_read(unsigned int channel, char * dest, unsigned int size) {
     return;
 }
 
-static void read_fractal(char * buffer, int len) {
+static void sys_read_fractal(char * dest, int len) {
     static int read_index = 0;
     char * dir = (char *)(FRACTAL_DATA + read_index);
-    int i = 0;
-
-    while (i < len && *dir != 0) {
-        buffer[i++] = *dir++;
-        read_index++;
-    }
-
-    if (*dir == '\0' || i == 0) {
+    *dest = *dir;
+    read_index++;
+    if (*dir == '\0') {
         read_index = 0;
-        buffer[i] = 0;
     }
     return;
 }
 
+static void sys_read_RGB(char * dest, int len) {
+    static int read_index = 0;
+    char * dir = (char *)(FRACTAL_DATA + read_index);
+    int i = 0;
+    while (i < 3 && *dir != 0) {
+        dest[i++] = *dir++;
+        read_index++;
+    }
+    if (*dir == '\0') {
+        read_index = 0;
+    }
+    return;
+}
 
 static void sys_read_stdin(char * dest, unsigned int size){
     int i = 0;

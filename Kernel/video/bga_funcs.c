@@ -2,6 +2,8 @@
 #include "types.h"
 #include "bga_funcs.h"
 
+//SOURCE: OSDEV WIKI. http://wiki.osdev.org/Bochs_VBE_Extensions
+
 static unsigned int width;
 static unsigned int height;
 static unsigned int bpp;
