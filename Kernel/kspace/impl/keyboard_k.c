@@ -8,11 +8,11 @@
 #include "keyboard_scancode.h"
 
 //Internal method declarations
-static char convertKey(byte);
-static char proccessControlCode(byte);
-static char checkControlBit(byte);
-static void processControlCode(byte);
-static void initializeBuffer(void);
+char convertKey(byte);
+char proccessControlCode(byte);
+char checkControlBit(byte);
+void processControlCode(byte);
+void initializeBuffer(void);
 
 //Kernel Keyboard buffer variables
 static dword controlCharacters;
@@ -49,7 +49,7 @@ void storeKey(void){
     return;
 }
 
-static char convertKey(byte keyCode){
+char convertKey(byte keyCode){
     char key;
     processControlCode(keyCode);
 
@@ -81,7 +81,7 @@ static char convertKey(byte keyCode){
     return key;
 }
 
-static char kbBufferIsEmpty(void) {
+char kbBufferIsEmpty(void) {
     return kBuffer[readCounter] == EMPTY;
 }
 
@@ -101,7 +101,7 @@ static char kbBufferIsEmpty(void) {
  *
  * NOTE: F1-F12 function as switches in this OS.
  */
-static void processControlCode(byte keyCode){
+void processControlCode(byte keyCode){
     switch(keyCode) {
         case CTRL_PRESSED:
             controlCharacters |= 1;
@@ -191,7 +191,7 @@ static void processControlCode(byte keyCode){
     }
 }
 
-static char checkControlBit(byte bit){
+char checkControlBit(byte bit){
     return (char) ((controlCharacters >> bit) & 1);
 }
 
