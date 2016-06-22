@@ -14,7 +14,7 @@
 
 //INPUT CHANNELS
 #define STDIN 0
-#define STDDATA 1
+#define STDFRACTAL 1
 
 void write(unsigned int channel, const void * source, unsigned int size);
 void read(unsigned int channel, const void * dest, unsigned int size);

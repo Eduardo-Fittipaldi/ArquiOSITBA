@@ -8,11 +8,11 @@
 #include "keyboard_scancode.h"
 
 //Internal method declarations
-char convertKey(byte);
-char proccessControlCode(byte);
-char checkControlBit(byte);
-void processControlCode(byte);
-void initializeBuffer(void);
+static char convertKey(byte);
+static char proccessControlCode(byte);
+static char checkControlBit(byte);
+static void processControlCode(byte);
+static void initializeBuffer(void);
 
 //Kernel Keyboard buffer variables
 static dword controlCharacters;
@@ -49,7 +49,7 @@ void storeKey(void){
     return;
 }
 
-char convertKey(byte keyCode){
+static char convertKey(byte keyCode){
     char key;
     processControlCode(keyCode);
 
@@ -76,15 +76,12 @@ char convertKey(byte keyCode){
 
     if(IS_LETTER(key) && checkControlBit(4)){
         key = (char)('A' + (key - 'a'));
-    }else if(IS_DIGIT(key) && !checkControlBit(3)){
-//        print("NUMLOCK NOT ACTIVATED\n");
-        key = NOWRITE;
     }
 
     return key;
 }
 
-char kbBufferIsEmpty(void) {
+static char kbBufferIsEmpty(void) {
     return kBuffer[readCounter] == EMPTY;
 }
 
@@ -104,7 +101,7 @@ char kbBufferIsEmpty(void) {
  *
  * NOTE: F1-F12 function as switches in this OS.
  */
-void processControlCode(byte keyCode){
+static void processControlCode(byte keyCode){
     switch(keyCode) {
         case CTRL_PRESSED:
             controlCharacters |= 1;
@@ -194,7 +191,7 @@ void processControlCode(byte keyCode){
     }
 }
 
-char checkControlBit(byte bit){
+static char checkControlBit(byte bit){
     return (char) ((controlCharacters >> bit) & 1);
 }
 

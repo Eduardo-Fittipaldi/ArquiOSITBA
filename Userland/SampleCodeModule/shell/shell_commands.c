@@ -12,7 +12,7 @@
 //http://lodev.org/cgtutor/sierpinski.html
 
 static void showcaseCommands();
-static void sierpinskiSet(int x1, int y1, int x2, int y2, int x3, int y3);
+static void sierpinskiSet(int iter, int x1, int y1, int x2, int y2, int x3, int y3);
 static void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3);
 
 command_t command_list[COMMANDS_AMOUNT];
@@ -53,12 +53,20 @@ int help(char * arg) {
 }
 
 int fractal(char * arg){
-//    printf("SE ENTRO AL FRACTAL\n");
-    video();
-//    juliaSet();
-//    drawLine(0,0,500,500);
-    sierpinskiSet(0,0,600,0,300,600);
-//    drawTriangle(0,0,600,0,300,600);
+    if(!strcmp(arg,"julia")){
+        video();
+        juliaSet();
+    }
+    if(!strcmp(arg,"sierp")){
+        int iter,x1,x2,x3,y1,y2,y3;
+        int args = fscanf(STDFRACTAL, "%d %d %d %d %d %d %d", &iter, &x1, &y1, &x2, &y2, &x3, &y3);
+        if(args != 7){
+            fprintf(STDERR, "Invalid File Format!\n");
+            return -1;
+        }
+        video();
+        sierpinskiSet(iter,x1,y1,x2,y2,x3,y3);
+    }
 }
 
 static void showcaseCommands(){
@@ -219,13 +227,13 @@ static void drawSubTriangle(int n, int depth, int x1, int y1, int x2, int y2, in
     }
 }
 
-static void sierpinskiSet(int x1, int y1, int x2, int y2, int x3, int y3){
+static void sierpinskiSet(int iter, int x1, int y1, int x2, int y2, int x3, int y3){
     drawLine(x1,y1,x2,y2);
     drawLine(x1,y1,x3,y3);
     drawLine(x2,y2,x3,y3);
 
     drawSubTriangle(
-            1, 15, //This represents the first recursion
+            1, iter, //This represents the first recursion
             (x1 + x2) / 2, //x coordinate of first corner
             (y1 + y2) / 2, //y coordinate of first corner
             (x1 + x3) / 2, //x coordinate of second corner

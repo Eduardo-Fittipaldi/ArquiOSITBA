@@ -21,7 +21,7 @@ extern byte endOfKernel;
 static const qword PageSize = 0x1000;
 
 static void * const sampleCodeModuleAddress = (void*)0x400000;
-static void * const sampleDataModuleAddress = (void*)0x500000;
+static void * const fractalDataModule = (void*)0x500000;
 
 typedef int (*EntryPoint)();
 
@@ -54,7 +54,7 @@ void * initializeKernelBinary()
 	ncNewline();
 	void * moduleAddresses[] = {
 		sampleCodeModuleAddress,
-		sampleDataModuleAddress
+		fractalDataModule
 	};
 
 	loadModules(&endOfKernelBinary, moduleAddresses);

@@ -1,14 +1,16 @@
 include Makefile.inc
 
-SAMPLE_DATA=0001-sampleDataModule.bin
+SAMPLE_DATA=fractalDataModule.bin
+FRACTAL_SOURCE=sierpinski_params
 
-all: sampleCodeModule sampleDataModule
+all: sampleCodeModule fractalDataModule
 
 sampleCodeModule:
 	cd SampleCodeModule; make
 
-sampleDataModule:
-	printf "This is sample data." >> $(SAMPLE_DATA) && dd if=/dev/zero bs=1 count=1 >> $(SAMPLE_DATA)
+fractalDataModule:
+	rm -rf $(SAMPLE_DATA)
+    cat $(FRACTAL_DATA) >> $(SAMPLE_DATA) && dd if=/dev/zero bs=1 count=1 >> $(SAMPLE_DATA)
 
 clean:
 	cd SampleCodeModule; make clean

@@ -3,6 +3,8 @@
 
 #include <types.h>
 
+#define FRACTAL_DATA 0x500000
+
 #define SYS_EXIT 	0
 #define SYS_READ 	1
 #define SYS_WRITE 	2
@@ -16,6 +18,7 @@
 
 //INPUT CHANNELS
 #define STDIN 0
+#define STDFRACTAL 1
 
 void syscallHandler(qword mode, qword arg1, qword arg2, qword arg3);
 void sys_write(unsigned int channel, char * source, unsigned int size);

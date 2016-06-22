@@ -15,7 +15,7 @@ int strcmp(const char * s1, const char * s2) {
         return 1;
     }
 
-    while(*s1 && *s2){
+    while(*s1 || *s2){
         if(*s1 > *s2){
             return 1;
         }else if(*s1 < *s2){
@@ -39,7 +39,7 @@ int strncmp(const char * s1, const char * s2, int n) {
         return 1;
     }
 
-    while(*s1 && *s2 && n){
+    while((*s1 || *s2) && n){
         if(*s1 > *s2){
             return 1;
         }else if(*s1 < *s2){

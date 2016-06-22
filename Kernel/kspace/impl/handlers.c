@@ -24,9 +24,4 @@ void int_20(){
 //Keyboard Int
 void int_21() {
     storeKey();
-
-//    unsigned char c= getKey();
-//    if(c){
-//        putchar(c,WHITE,BLACK);
-//    }
 }
